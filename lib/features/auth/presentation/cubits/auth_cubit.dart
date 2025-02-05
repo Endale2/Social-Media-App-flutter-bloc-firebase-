@@ -8,7 +8,7 @@ class AuthCubit extends Cubit<AuthState> {
   AppUser? _currentuser;
   AuthCubit({required this.authRepo}) : super(AuthInitial());
 
-  //check if the user is already authenticated
+  //check if the user is already authenticated.
   void checkAuth() async {
     final AppUser? user = await authRepo.getCurrentUser();
     if (user != null) {
