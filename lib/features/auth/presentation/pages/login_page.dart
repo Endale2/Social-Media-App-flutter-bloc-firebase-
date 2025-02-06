@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialx/features/auth/presentation/components/my_button.dart';
 import 'package:socialx/features/auth/presentation/components/my_text_field.dart';
+import 'package:socialx/features/auth/presentation/cubits/auth_cubit.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function()? togglePages;
@@ -13,6 +15,29 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  void login() {
+    final String email = emailController.text;
+    final String password = passwordController.text;
+    //cubit
+    final authCubit = context.read<AuthCubit>();
+
+    //check if it is not empty
+    if (email.isNotEmpty && password.isNotEmpty) {
+      authCubit.login(email, password);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("please enter both email and password")));
+    }
+  }
+
+  @override
+  void dipose() {
+    passwordController.dispose();
+    emailController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: true),
               //login button
               const SizedBox(height: 25),
-              MyButton(onTap: () {}, text: "Login"),
+              MyButton(onTap: login, text: "Login"),
               //not registered yet?
               const SizedBox(height: 25),
               Row(

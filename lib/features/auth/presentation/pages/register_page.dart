@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialx/features/auth/presentation/components/my_button.dart';
 import 'package:socialx/features/auth/presentation/components/my_text_field.dart';
+import 'package:socialx/features/auth/presentation/cubits/auth_cubit.dart';
 
 class RegisterPage extends StatefulWidget {
   final void Function()? togglePages;
@@ -15,6 +17,39 @@ class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+
+  void register() {
+    final String name = nameController.text;
+    final String email = emailController.text;
+    final String password = passwordController.text;
+    final String confirmPassword = confirmPasswordController.text;
+
+    //cubit
+    final authCubit = context.read<AuthCubit>();
+    if (name.isNotEmpty &&
+        email.isNotEmpty &&
+        password.isNotEmpty &&
+        confirmPassword.isNotEmpty) {
+      if (password == confirmPassword) {
+        authCubit.register(name, email, password);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("The Password Doesn't Match")));
+      }
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("All Fields Must Be Filled")));
+    }
+  }
+
+  @override
+  void dipose() {
+    nameController.dispose();
+    confirmPasswordController.dispose();
+    passwordController.dispose();
+    emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   obscureText: true),
               //login button
               const SizedBox(height: 25),
-              MyButton(onTap: () {}, text: "Register"),
+              MyButton(onTap: register, text: "Register"),
               //not registered yet?
               const SizedBox(height: 25),
               Row(
