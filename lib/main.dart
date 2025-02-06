@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:socialx/features/auth/presentation/pages/login_page.dart';
-import 'package:socialx/features/auth/presentation/pages/register_page.dart';
+import 'package:socialx/features/auth/presentation/pages/auth_page.dart';
 import 'package:socialx/firebase_options.dart';
 import 'package:socialx/themes/light_mode.dart';
 
@@ -17,8 +16,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: lightMode,
-        debugShowCheckedModeBanner: false,
-        home: RegisterPage());
+        theme: lightMode, debugShowCheckedModeBanner: false, home: AuthPage());
   }
 }
