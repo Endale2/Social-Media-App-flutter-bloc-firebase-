@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class MyButton extends StatelessWidget {
@@ -10,9 +11,15 @@ class MyButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+          padding: EdgeInsets.all(25),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.tertiary,
+            borderRadius: BorderRadius.circular(12),
+          ),
           child: Center(
-        child: Text(text),
-      )),
+            child: Text(text,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          )),
     );
   }
 }
