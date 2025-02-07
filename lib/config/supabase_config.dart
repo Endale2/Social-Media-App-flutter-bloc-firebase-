@@ -11,8 +11,6 @@ class SupabaseConfig {
   SupabaseConfig._internal();
 
   Future<void> initialize() async {
-    await dotenv.load();
-
     await Supabase.initialize(
       url: dotenv.env['SUPABASE_URL'] ?? '',
       anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? '',
