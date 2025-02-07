@@ -16,7 +16,7 @@ class FirebaseProfileRepo implements ProfileRepo {
         final userData = userDoc.data();
         if (userData != null) {
           return ProfileUser(
-              bio: userData["bio"],
+              bio: userData["bio"] ?? '',
               profileImageUrl: userData["profileImageUrl"].toString(),
               email: userData["email"],
               name: userData["name"],

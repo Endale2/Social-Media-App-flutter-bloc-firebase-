@@ -37,7 +37,7 @@ class ProfileUser extends AppUser {
 
   factory ProfileUser.fromJson(Map<String, dynamic> json) {
     return ProfileUser(
-        bio: json["bio"] ?? "",
+        bio: json["bio"] ?? '',
         profileImageUrl: json["profileImageUrl"] ?? "",
         email: json["email"],
         name: json["name"],
