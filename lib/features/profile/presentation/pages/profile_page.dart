@@ -4,7 +4,8 @@ import 'package:socialx/features/auth/domain/entities/app_user.dart';
 import 'package:socialx/features/auth/presentation/cubits/auth_cubit.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final String uid;
+  const ProfilePage({super.key, required this.uid});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -17,6 +18,10 @@ class _ProfilePageState extends State<ProfilePage> {
   late AppUser? currentUser = authCubit.currentUser;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text(currentUser!.email)));
+    return Scaffold(
+        appBar: AppBar(
+      title: Text(currentUser!.email),
+      foregroundColor: Theme.of(context).colorScheme.primary,
+    ));
   }
 }
