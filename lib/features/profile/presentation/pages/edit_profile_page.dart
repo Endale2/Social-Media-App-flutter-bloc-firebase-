@@ -106,6 +106,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.secondary,
                         shape: BoxShape.circle),
+                    clipBehavior: Clip.hardEdge,
                     child:
                         //picker for mobile
                         (!kIsWeb && imagePickedFile != null)
@@ -127,6 +128,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                         color: Theme.of(context)
                                             .colorScheme
                                             .primary),
+                                    imageBuilder: (context, imageProvider) =>
+                                        Image(
+                                            image: imageProvider,
+                                            fit: BoxFit.cover),
                                   ))),
             const SizedBox(height: 25),
             //pick image button
@@ -149,3 +154,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ));
   }
 }
+
+
+
+
+//132
