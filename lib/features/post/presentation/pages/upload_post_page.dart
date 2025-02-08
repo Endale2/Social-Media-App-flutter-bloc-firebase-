@@ -113,6 +113,9 @@ class _UploadPostPageState extends State<UploadPostPage> {
         appBar: AppBar(
           title: Text("Create New Post"),
           foregroundColor: Theme.of(context).colorScheme.primary,
+          actions: [
+            IconButton(onPressed: uploadPost, icon: Icon(Icons.upload))
+          ],
         ),
         body: Center(
             child: Column(
