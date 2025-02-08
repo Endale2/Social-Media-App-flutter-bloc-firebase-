@@ -17,8 +17,49 @@ class PostCubit extends Cubit<PostState> {
   Future<void> createPost(Post post,
       {String? imagePath, Uint8List? imageBytes}) async {
     String? imageUrl;
-    //handle image upload for mobile
+    try {
+      //handle image upload for mobile
 
-    //handle image upload for web
+      if (imagePath != null) {
+        emit(PostLoading());
+        imageUrl =
+            await storageRepo.uploadProfileImageMobile(imagePath, post.id);
+      }
+
+      //handle image upload for web
+      else if (imageBytes != null) {
+        emit(PostUploading());
+        imageUrl = await storageRepo.uploadProfileImageWeb(imageBytes, post.id);
+      }
+      //give imageUrl to post
+
+      final newPost = post.copyWith(imageUrl: imageUrl);
+
+      //create post in backend
+
+      postRepo.createPost(newPost);
+    } catch (e) {
+      emit(PostError("failed to create post $e"));
+    }
+  }
+
+//fetch all posts
+  Future<void> fetchAllPosts() async {
+    try {
+      emit(PostLoading());
+      final posts = await postRepo.fetchAllPosts();
+      emit(PostLoaded(posts));
+    } catch (e) {
+      emit(PostError("Failed to load posts"));
+    }
+  }
+  //delete a post
+
+  Future<void> deletePost(String postId) async {
+    try {
+      await postRepo.deletePost(postId);
+    } catch (e) {
+      emit(PostError("unable to delete the post: $e "));
+    }
   }
 }
