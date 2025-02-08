@@ -12,10 +12,16 @@ class FirebaseAuthRepo implements AuthRepo {
     try {
       UserCredential userCredential = await firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
-
+//fetch user document from firestore
+      DocumentSnapshot userDoc = await firebaseFirestore
+          .collection("users")
+          .doc(userCredential.user!.uid)
+          .get();
       //create user
-      AppUser user =
-          AppUser(email: email, name: "", uid: userCredential.user!.uid);
+      AppUser user = AppUser(
+          email: email,
+          name: userDoc["name"] ?? "",
+          uid: userCredential.user!.uid);
       return user;
     } catch (e) {
       throw Exception("Login failed $e");
@@ -56,7 +62,15 @@ class FirebaseAuthRepo implements AuthRepo {
     if (firebaseUser == null) {
       return null;
     }
-
-    return AppUser(email: firebaseUser.email!, name: "", uid: firebaseUser.uid);
+    //fetch user document from firestore
+    DocumentSnapshot userDoc =
+        await firebaseFirestore.collection("users").doc(firebaseUser.uid).get();
+    if (!userDoc.exists) {
+      return null;
+    }
+    return AppUser(
+        email: firebaseUser.email!,
+        name: userDoc["name"],
+        uid: firebaseUser.uid);
   }
 }
