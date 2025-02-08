@@ -43,7 +43,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   @override
-  void dipose() {
+  void dispose() {
     nameController.dispose();
     confirmPasswordController.dispose();
     passwordController.dispose();

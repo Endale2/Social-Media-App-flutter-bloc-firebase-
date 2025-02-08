@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  void dipose() {
+  void dispose() {
     passwordController.dispose();
     emailController.dispose();
     super.dispose();
