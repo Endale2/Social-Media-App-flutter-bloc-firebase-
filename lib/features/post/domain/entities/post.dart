@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:socialx/features/post/domain/entities/comment.dart';
 
 class Post {
   final String id;
@@ -8,6 +9,7 @@ class Post {
   final String imageUrl;
   final DateTime timestamp;
   final List<String> likes;
+  final List<Comment> comments;
   Post(
       {required this.id,
       required this.userId,
@@ -15,7 +17,8 @@ class Post {
       required this.text,
       required this.imageUrl,
       required this.timestamp,
-      required this.likes});
+      required this.likes,
+      required this.comments});
 
   Post copyWith({String? imageUrl}) {
     return Post(
@@ -25,7 +28,8 @@ class Post {
         text: text,
         imageUrl: imageUrl ?? this.imageUrl,
         timestamp: timestamp,
-        likes: likes);
+        likes: likes,
+        comments: comments);
   }
 
   //convert post to json
@@ -38,7 +42,8 @@ class Post {
       "text": text,
       "imageUrl": imageUrl,
       "timestamp": Timestamp.fromDate(timestamp),
-      "likes": likes
+      "likes": likes,
+      "comments": comments.map((comment) => comment.toJson()).toList(),
     };
   }
   //conver json to post object
@@ -51,6 +56,6 @@ class Post {
         text: json["text"],
         imageUrl: json["imageUrl"],
         timestamp: (json["timestamp"] as Timestamp).toDate(),
-        likes: json["likes"] ?? []);
+        likes: List<String>.from(json["likes"] ?? []));
   }
 }

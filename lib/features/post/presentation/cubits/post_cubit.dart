@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialx/features/post/domain/entities/post.dart';
 import 'package:socialx/features/post/domain/repos/post_repo.dart';
@@ -60,6 +59,16 @@ class PostCubit extends Cubit<PostState> {
       await postRepo.deletePost(postId);
     } catch (e) {
       emit(PostError("unable to delete the post: $e "));
+    }
+  }
+
+//toggle like on post
+
+  Future<void> toggleLikePost(String postId, String userId) async {
+    try {
+      await postRepo.toggleLikePost(postId, userId);
+    } catch (e) {
+      emit(PostError("Failed to toggle like: $e"));
     }
   }
 }

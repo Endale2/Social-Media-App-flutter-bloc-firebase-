@@ -59,6 +59,34 @@ class _PostTileState extends State<PostTile> {
     }
   }
 
+//likes
+
+  void toggleLikePost() {
+    //current like status
+    final isLiked = widget.post.likes.contains(currentUser!.uid);
+
+    setState(() {
+      if (isLiked) {
+        widget.post.likes.remove(currentUser!.uid);
+      } else {
+        widget.post.likes.add(currentUser!.uid);
+      }
+    });
+
+    //update like
+    postCubit
+        .toggleLikePost(widget.post.id, currentUser!.uid)
+        .catchError((error) {
+      setState(() {
+        if (isLiked) {
+          widget.post.likes.add(currentUser!.uid); //revert like
+        } else {
+          widget.post.likes
+              .remove(currentUser!.uid); // revert unlike if error happened
+        }
+      });
+    });
+  }
   //show options for deleting the post
 
   void showOptions() {
@@ -149,9 +177,30 @@ class _PostTileState extends State<PostTile> {
             child: Row(
               children: [
                 //like button
-                Icon(Icons.favorite_border),
-                Text("0"),
-                const SizedBox(width: 20),
+                SizedBox(
+                  width: 50,
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: toggleLikePost,
+                        child: Icon(
+                            widget.post.likes.contains(currentUser!.uid)
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: widget.post.likes.contains(currentUser!.uid)
+                                ? Colors.red
+                                : Theme.of(context).colorScheme.primary),
+                      ),
+                      const SizedBox(width: 5),
+                      //like number
+                      Text(widget.post.likes.length.toString(),
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Theme.of(context).colorScheme.primary)),
+                    ],
+                  ),
+                ),
+
                 //comment
 
                 Icon(Icons.comment),

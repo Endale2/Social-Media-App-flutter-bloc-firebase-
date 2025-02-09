@@ -60,7 +60,7 @@ class FirebasePostRepo implements PostRepo {
 
   @override
   Future<void> toggleLikePost(String postId, String userId) async {
-    try {} catch (e) {
+    try {
       //get the poost document from firestore
 
       final postDoc = await postsCollection.doc(postId).get();
@@ -82,6 +82,8 @@ class FirebasePostRepo implements PostRepo {
       } else {
         throw Exception("Post Not found");
       }
+    } catch (e) {
+      throw Exception("Error toggling like: $e");
     }
   }
 }
