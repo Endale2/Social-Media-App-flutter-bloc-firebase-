@@ -7,13 +7,15 @@ class Post {
   final String text;
   final String imageUrl;
   final DateTime timestamp;
+  final List<String> likes;
   Post(
       {required this.id,
       required this.userId,
       required this.userName,
       required this.text,
       required this.imageUrl,
-      required this.timestamp});
+      required this.timestamp,
+      required this.likes});
 
   Post copyWith({String? imageUrl}) {
     return Post(
@@ -22,7 +24,8 @@ class Post {
         userName: userName,
         text: text,
         imageUrl: imageUrl ?? this.imageUrl,
-        timestamp: timestamp);
+        timestamp: timestamp,
+        likes: likes);
   }
 
   //convert post to json
@@ -34,7 +37,8 @@ class Post {
       "userName": userName,
       "text": text,
       "imageUrl": imageUrl,
-      "timestamp": Timestamp.fromDate(timestamp)
+      "timestamp": Timestamp.fromDate(timestamp),
+      "likes": likes
     };
   }
   //conver json to post object
@@ -46,6 +50,7 @@ class Post {
         userName: json["userName"],
         text: json["text"],
         imageUrl: json["imageUrl"],
-        timestamp: (json["timestamp"] as Timestamp).toDate());
+        timestamp: (json["timestamp"] as Timestamp).toDate(),
+        likes: json["likes"] ?? []);
   }
 }

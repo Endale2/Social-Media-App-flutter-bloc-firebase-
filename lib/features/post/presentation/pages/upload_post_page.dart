@@ -73,7 +73,8 @@ class _UploadPostPageState extends State<UploadPostPage> {
         userName: currentUser!.name,
         text: textController.text,
         imageUrl: "",
-        timestamp: DateTime.now());
+        timestamp: DateTime.now(),
+        likes: []);
     final postCubit = context.read<PostCubit>();
     if (kIsWeb) {
       postCubit.createPost(newPost, imageBytes: imagePickedFile?.bytes);

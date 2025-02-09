@@ -143,6 +143,25 @@ class _PostTileState extends State<PostTile> {
           ),
 
           //  like , comment and timestamp  buttons
+
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              children: [
+                //like button
+                Icon(Icons.favorite_border),
+                Text("0"),
+                const SizedBox(width: 20),
+                //comment
+
+                Icon(Icons.comment),
+                Text("0"),
+                const Spacer(),
+                //stamp
+                Text(widget.post.timestamp.toString())
+              ],
+            ),
+          )
         ],
       ),
     );
