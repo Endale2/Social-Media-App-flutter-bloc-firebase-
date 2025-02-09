@@ -1,6 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialx/features/auth/domain/entities/app_user.dart';
 import 'package:socialx/features/post/domain/entities/post.dart';
+import 'package:socialx/features/post/presentation/cubits/post_cubit.dart';
+import 'package:socialx/features/profile/presentation/cubits/profile_cubit.dart';
 
 class PostTile extends StatefulWidget {
   final Post post;
@@ -13,7 +17,18 @@ class PostTile extends StatefulWidget {
 }
 
 class _PostTileState extends State<PostTile> {
-  //options for deleting the post
+  //post and profile cubits
+
+  late final profileCubit = context.read<ProfileCubit>();
+  late final postCubit = context.read<PostCubit>();
+
+  bool isOwnPost = false;
+
+  //current user
+
+  AppUser? currentUser;
+
+  //show options for deleting the post
 
   void showOptions() {
     showDialog(
@@ -46,8 +61,7 @@ class _PostTileState extends State<PostTile> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(widget.post.userName),
-            IconButton(
-                onPressed: widget.onDeletePressed, icon: Icon(Icons.delete))
+            IconButton(onPressed: showOptions, icon: Icon(Icons.delete))
           ],
         ),
         //image
