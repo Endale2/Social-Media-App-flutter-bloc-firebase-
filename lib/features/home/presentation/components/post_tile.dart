@@ -123,7 +123,12 @@ class _PostTileState extends State<PostTile> {
 
                 //delete button
                 if (isOwnPost)
-                  IconButton(onPressed: showOptions, icon: Icon(Icons.delete)),
+                  GestureDetector(
+                      onTap: showOptions,
+                      child: Icon(
+                        Icons.delete,
+                        color: Theme.of(context).colorScheme.primary,
+                      )),
               ],
             ),
           ),
@@ -136,6 +141,8 @@ class _PostTileState extends State<PostTile> {
             placeholder: (context, url) => const SizedBox(height: 430),
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
+
+          //  like , comment and timestamp  buttons
         ],
       ),
     );
