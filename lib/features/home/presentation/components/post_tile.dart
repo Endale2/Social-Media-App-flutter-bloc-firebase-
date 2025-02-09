@@ -45,10 +45,19 @@ class _PostTileState extends State<PostTile> {
   void getCurrentUser() {
     final authCubit = context.read<AuthCubit>();
     currentUser = authCubit.currentUser;
+
     isOwnPost = (widget.post.userId == currentUser!.uid);
   }
 
-  Future<void> fetchPostUser() async {}
+  Future<void> fetchPostUser() async {
+    final fetchedUser = await profileCubit.getUserProfile(widget.post.userId);
+
+    if (fetchedUser != null) {
+      setState(() {
+        postUser = fetchedUser;
+      });
+    }
+  }
 
   //show options for deleting the post
 
@@ -77,25 +86,55 @@ class _PostTileState extends State<PostTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(widget.post.userName),
-            IconButton(onPressed: showOptions, icon: Icon(Icons.delete))
-          ],
-        ),
-        //image
-        CachedNetworkImage(
-          imageUrl: widget.post.imageUrl,
-          height: 430,
-          width: double.infinity,
-          fit: BoxFit.cover,
-          placeholder: (context, url) => const SizedBox(height: 430),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
-        ),
-      ],
+    return Container(
+      color: Theme.of(context).colorScheme.secondary,
+      child: Column(
+        children: [
+          //post card header
+
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                postUser?.profileImageUrl != null
+                    ? CachedNetworkImage(
+                        imageUrl: postUser!.profileImageUrl,
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.person),
+                        imageBuilder: (context, imageProvider) => Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  image: imageProvider, fit: BoxFit.cover),
+                            )),
+                      )
+                    : Icon(Icons.person),
+
+                const SizedBox(width: 20),
+                //profile name
+                Text(widget.post.userName),
+                const Spacer(),
+
+                //delete button
+                if (isOwnPost)
+                  IconButton(onPressed: showOptions, icon: Icon(Icons.delete)),
+              ],
+            ),
+          ),
+          //image
+          CachedNetworkImage(
+            imageUrl: widget.post.imageUrl,
+            height: 430,
+            width: double.infinity,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => const SizedBox(height: 430),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+          ),
+        ],
+      ),
     );
   }
 }
