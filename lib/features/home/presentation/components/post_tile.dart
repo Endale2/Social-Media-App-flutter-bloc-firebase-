@@ -115,7 +115,10 @@ class _PostTileState extends State<PostTile> {
 
                 const SizedBox(width: 20),
                 //profile name
-                Text(widget.post.userName),
+                Text(widget.post.userName,
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                        fontWeight: FontWeight.bold)),
                 const Spacer(),
 
                 //delete button
