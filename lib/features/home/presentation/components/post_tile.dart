@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialx/features/auth/domain/entities/app_user.dart';
+import 'package:socialx/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:socialx/features/post/domain/entities/post.dart';
 import 'package:socialx/features/post/presentation/cubits/post_cubit.dart';
+import 'package:socialx/features/profile/domain/entities/profile_user.dart';
 import 'package:socialx/features/profile/presentation/cubits/profile_cubit.dart';
 
 class PostTile extends StatefulWidget {
@@ -27,6 +29,26 @@ class _PostTileState extends State<PostTile> {
   //current user
 
   AppUser? currentUser;
+
+  //post user
+
+  ProfileUser? postUser;
+  //on the app start
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+    fetchPostUser();
+  }
+
+  void getCurrentUser() {
+    final authCubit = context.read<AuthCubit>();
+    currentUser = authCubit.currentUser;
+    isOwnPost = (widget.post.userId == currentUser!.uid);
+  }
+
+  Future<void> fetchPostUser() async {}
 
   //show options for deleting the post
 
