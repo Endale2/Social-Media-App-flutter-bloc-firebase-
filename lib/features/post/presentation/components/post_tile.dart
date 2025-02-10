@@ -294,15 +294,51 @@ class _PostTileState extends State<PostTile> {
             ),
           ),
 
-        //COMMENTS
+          //COMMENTS
 
-      BlocBuilder<PostCubit , PostState>(builder: (context, state){
-        //loaded
+          BlocBuilder<PostCubit, PostState>(builder: (context, state) {
+            //loaded
 
-        if(state is PostLoaded){
-          //get individual post
-        }
-      })
+            if (state is PostLoaded) {
+              //get individual post
+              final post =
+                  state.posts.firstWhere((post) => post.id == widget.post.id);
+              if (post.comments.isNotEmpty) {
+                int showCommentCount = post.comments.length;
+                //comment section
+
+                return ListView.builder(
+                    itemCount: showCommentCount,
+                    itemBuilder: (context, index) {
+                      final comment = post.comments[index];
+                      return Row(
+                        children: [
+                          //name
+                          Text(comment.userName),
+                          //comment text
+
+                          Text(comment.text)
+                        ],
+                      );
+                    });
+              }
+            }
+            // Loading
+
+            if (state is PostLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            //Error
+
+            else if (state is PostError) {
+              return Center(child: Text(state.message));
+            } else {
+              return Center(child: Text("Something Went Wrong "));
+            }
+          })
         ],
       ),
     );
