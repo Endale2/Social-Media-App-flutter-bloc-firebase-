@@ -87,4 +87,15 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(ProfileError("updating profile error: $e.toString()"));
     }
   }
+
+//toggle follow & unfollow
+  Future<void> toggleFollow(String currentUserId, String targetUserId) async {
+    try {
+      await profileRepo.toggleFollow(currentUserId, targetUserId);
+
+      await fetchUserProfile(targetUserId);
+    } catch (e) {
+      emit(ProfileError("Failed to toggle follow/unfollow: $e"));
+    }
+  }
 }

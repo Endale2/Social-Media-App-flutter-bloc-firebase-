@@ -53,6 +53,43 @@ class FirebaseProfileRepo implements ProfileRepo {
 
   @override
   Future<void> toggleFollow(String currentUid, String targetUid) async {
-    try {} catch (e) {}
+    try {
+      final currentUserDoc =
+          await firebaseFirestore.collection("users").doc(currentUid).get();
+      final targetUserDoc =
+          await firebaseFirestore.collection("users").doc(targetUid).get();
+
+      if (currentUserDoc.exists && targetUserDoc.exists) {
+        final currentUserData = currentUserDoc.data();
+        final targetUserData = targetUserDoc.data();
+
+        if (currentUserData != null && targetUserData != null) {
+          final List<String> currentFollowing =
+              List<String>.from(currentUserData["following"] ?? []);
+
+          //check if the current user already following the target
+
+          if (currentFollowing.contains(targetUid)) {
+            //unfollow
+            await firebaseFirestore.collection("users").doc(currentUid).update({
+              "following": FieldValue.arrayRemove([targetUid])
+            });
+
+            await firebaseFirestore.collection("users").doc(targetUid).update({
+              "followers": FieldValue.arrayRemove([currentUid])
+            });
+          } else {
+            //follow
+            await firebaseFirestore.collection("users").doc(currentUid).update({
+              "following": FieldValue.arrayUnion([targetUid])
+            });
+
+            await firebaseFirestore.collection("users").doc(targetUid).update({
+              "followers": FieldValue.arrayUnion([currentUid])
+            });
+          }
+        }
+      }
+    } catch (e) {}
   }
 }
