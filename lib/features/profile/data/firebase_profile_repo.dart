@@ -15,12 +15,17 @@ class FirebaseProfileRepo implements ProfileRepo {
       if (userDoc.exists) {
         final userData = userDoc.data();
         if (userData != null) {
+          //fetch following and followers
+          final followers = List<String>.from(userData["followers"] ?? []);
+          final following = List<String>.from(userData["following"] ?? []);
           return ProfileUser(
               bio: userData["bio"] ?? '',
               profileImageUrl: userData["profileImageUrl"].toString(),
               email: userData["email"],
               name: userData["name"],
-              uid: uid);
+              uid: uid,
+              followers: followers,
+              following: following);
         }
       }
       return null;
@@ -44,5 +49,10 @@ class FirebaseProfileRepo implements ProfileRepo {
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+  @override
+  Future<void> toggleFollow(String currentUid, String targetUid) async {
+    try {} catch (e) {}
   }
 }

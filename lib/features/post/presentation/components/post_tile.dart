@@ -11,6 +11,7 @@ import 'package:socialx/features/post/presentation/cubits/post_cubit.dart';
 import 'package:socialx/features/post/presentation/cubits/post_state.dart';
 import 'package:socialx/features/profile/domain/entities/profile_user.dart';
 import 'package:socialx/features/profile/presentation/cubits/profile_cubit.dart';
+import 'package:socialx/features/profile/presentation/pages/profile_page.dart';
 
 class PostTile extends StatefulWidget {
   final Post post;
@@ -131,8 +132,8 @@ class _PostTileState extends State<PostTile> {
     final newComment = Comment(
         id: DateTime.now().microsecondsSinceEpoch.toString(),
         postId: widget.post.id,
-        userId: widget.post.userId,
-        userName: widget.post.userName,
+        userId: currentUser!.uid,
+        userName: currentUser!.name,
         text: commentTextController.text,
         timestamp: DateTime.now());
 
@@ -181,44 +182,51 @@ class _PostTileState extends State<PostTile> {
         children: [
           //post card header
 
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                postUser?.profileImageUrl != null
-                    ? CachedNetworkImage(
-                        imageUrl: postUser!.profileImageUrl,
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.person),
-                        imageBuilder: (context, imageProvider) => Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  image: imageProvider, fit: BoxFit.cover),
-                            )),
-                      )
-                    : Icon(Icons.person),
+          GestureDetector(
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ProfilePage(uid: widget.post.userId))),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  postUser?.profileImageUrl != null
+                      ? CachedNetworkImage(
+                          imageUrl: postUser!.profileImageUrl,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.person),
+                          imageBuilder: (context, imageProvider) => Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image: imageProvider, fit: BoxFit.cover),
+                              )),
+                        )
+                      : Icon(Icons.person),
 
-                const SizedBox(width: 20),
-                //profile name
-                Text(widget.post.userName,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.inversePrimary,
-                        fontWeight: FontWeight.bold)),
-                const Spacer(),
+                  const SizedBox(width: 20),
+                  //profile name
+                  Text(widget.post.userName,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                          fontWeight: FontWeight.bold)),
+                  const Spacer(),
 
-                //delete button
-                if (isOwnPost)
-                  GestureDetector(
-                      onTap: showOptions,
-                      child: Icon(
-                        Icons.delete,
-                        color: Theme.of(context).colorScheme.primary,
-                      )),
-              ],
+                  //delete button
+                  if (isOwnPost)
+                    GestureDetector(
+                        onTap: showOptions,
+                        child: Icon(
+                          Icons.delete,
+                          color: Theme.of(context).colorScheme.primary,
+                        )),
+                ],
+              ),
             ),
           ),
           //image
@@ -315,7 +323,9 @@ class _PostTileState extends State<PostTile> {
                     itemCount: showCommentCount,
                     itemBuilder: (context, index) {
                       final comment = post.comments[index];
-                      return CommentTile( comment: comment,);
+                      return CommentTile(
+                        comment: comment,
+                      );
                     });
               }
             }

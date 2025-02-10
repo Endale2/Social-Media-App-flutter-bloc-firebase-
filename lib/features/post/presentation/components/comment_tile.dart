@@ -69,7 +69,7 @@ class _CommentTileState extends State<CommentTile> {
           //comment text
 
           Text(widget.comment.text),
-
+          const Spacer(),
           //button to delete comment
 
           if (isOwnComment)
