@@ -6,6 +6,7 @@ import 'package:socialx/features/auth/presentation/components/my_text_field.dart
 import 'package:socialx/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:socialx/features/post/domain/entities/comment.dart';
 import 'package:socialx/features/post/domain/entities/post.dart';
+import 'package:socialx/features/post/presentation/components/comment_tile.dart';
 import 'package:socialx/features/post/presentation/cubits/post_cubit.dart';
 import 'package:socialx/features/post/presentation/cubits/post_state.dart';
 import 'package:socialx/features/profile/domain/entities/profile_user.dart';
@@ -303,23 +304,18 @@ class _PostTileState extends State<PostTile> {
               //get individual post
               final post =
                   state.posts.firstWhere((post) => post.id == widget.post.id);
+
               if (post.comments.isNotEmpty) {
                 int showCommentCount = post.comments.length;
                 //comment section
 
                 return ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
                     itemCount: showCommentCount,
                     itemBuilder: (context, index) {
                       final comment = post.comments[index];
-                      return Row(
-                        children: [
-                          //name
-                          Text(comment.userName),
-                          //comment text
-
-                          Text(comment.text)
-                        ],
-                      );
+                      return CommentTile( comment: comment,);
                     });
               }
             }
@@ -336,7 +332,7 @@ class _PostTileState extends State<PostTile> {
             else if (state is PostError) {
               return Center(child: Text(state.message));
             } else {
-              return Center(child: Text("Something Went Wrong "));
+              return const SizedBox();
             }
           })
         ],
