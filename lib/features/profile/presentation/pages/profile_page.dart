@@ -7,6 +7,8 @@ import 'package:socialx/features/post/presentation/components/post_tile.dart';
 import 'package:socialx/features/post/presentation/cubits/post_cubit.dart';
 import 'package:socialx/features/post/presentation/cubits/post_state.dart';
 import 'package:socialx/features/profile/presentation/components/bio_box.dart';
+import 'package:socialx/features/profile/presentation/components/follow_button.dart';
+import 'package:socialx/features/profile/presentation/components/profile_stats.dart';
 import 'package:socialx/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:socialx/features/profile/presentation/cubits/profile_state.dart';
 import 'package:socialx/features/profile/presentation/pages/edit_profile_page.dart';
@@ -39,8 +41,43 @@ class _ProfilePageState extends State<ProfilePage> {
     profileCubit.fetchUserProfile(widget.uid);
   }
 
+  //follo button
+
+  void followButtonPressed() {
+    final profileState = profileCubit.state;
+
+    if (profileState is! ProfileLoaded) {
+      return;
+    }
+    final profileUser = profileState.profileUser;
+    final isFollowing = profileUser.followers.contains(currentUser!.uid);
+    setState(() {
+      if (isFollowing) {
+        //unfollow
+        profileUser.followers.remove(currentUser!.uid);
+      } else {
+        //follow
+        profileUser.followers.add(currentUser!.uid);
+      }
+    });
+    profileCubit.toggleFollow(currentUser!.uid, widget.uid).catchError((error) {
+      //revert update if there is an error
+
+      setState(() {
+        if (isFollowing) {
+          //unfollow
+          profileUser.followers.remove(currentUser!.uid);
+        } else {
+          //follow
+          profileUser.followers.add(currentUser!.uid);
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    bool isOwnProfile = (widget.uid == currentUser!.uid);
     return BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
       //data loaded
       if (state is ProfileLoaded) {
@@ -51,15 +88,16 @@ class _ProfilePageState extends State<ProfilePage> {
               title: Text(user.name),
               foregroundColor: Theme.of(context).colorScheme.primary,
               actions: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  EditProfilePage(user: user)));
-                    },
-                    icon: Icon(Icons.settings))
+                if (isOwnProfile)
+                  IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    EditProfilePage(user: user)));
+                      },
+                      icon: Icon(Icons.settings))
               ],
             ),
             body: ListView(
@@ -91,6 +129,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 25),
+                //follow /unfollow count
+
+                ProfileStats(
+                    followerCount: user.followers.length,
+                    followingCount: user.following.length,
+                    postCount: postCount),
+                //follow/unfollow button
+                if (!isOwnProfile)
+                  FollowButton(
+                      onPressed: followButtonPressed,
+                      isFollowing: user.followers.contains(currentUser!.uid)),
+
                 //Bio box
                 Padding(
                   padding: const EdgeInsets.only(left: 25),
