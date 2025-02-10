@@ -2,9 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialx/features/auth/domain/entities/app_user.dart';
+import 'package:socialx/features/auth/presentation/components/my_text_field.dart';
 import 'package:socialx/features/auth/presentation/cubits/auth_cubit.dart';
+import 'package:socialx/features/post/domain/entities/comment.dart';
 import 'package:socialx/features/post/domain/entities/post.dart';
 import 'package:socialx/features/post/presentation/cubits/post_cubit.dart';
+import 'package:socialx/features/post/presentation/cubits/post_state.dart';
 import 'package:socialx/features/profile/domain/entities/profile_user.dart';
 import 'package:socialx/features/profile/presentation/cubits/profile_cubit.dart';
 
@@ -89,6 +92,63 @@ class _PostTileState extends State<PostTile> {
   }
   //show options for deleting the post
 
+//COMMENTS
+
+  final commentTextController = TextEditingController();
+  //comment box
+
+  void openCommentBox() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: MyTextField(
+          controller: commentTextController,
+          hintText: "Add New Comment",
+          obscureText: false,
+        ),
+        actions: [
+          //cancel  button
+
+          TextButton(
+              onPressed: () => Navigator.pop(context), child: Text("Cancel")),
+
+          //save button
+          TextButton(
+              onPressed: () {
+                addComment();
+                Navigator.of(context).pop();
+              },
+              child: Text("Save"))
+        ],
+      ),
+    );
+  }
+
+  void addComment() {
+    // create new comment
+
+    final newComment = Comment(
+        id: DateTime.now().microsecondsSinceEpoch.toString(),
+        postId: widget.post.id,
+        userId: widget.post.userId,
+        userName: widget.post.userName,
+        text: commentTextController.text,
+        timestamp: DateTime.now());
+
+    //add comment by cubit
+
+    if (commentTextController.text.isNotEmpty) {
+      postCubit.addComment(widget.post.id, newComment);
+    }
+  }
+
+  @override
+  void dispose() {
+    commentTextController.dispose();
+    super.dispose();
+  }
+
+//show options for deleting
   void showOptions() {
     showDialog(
       context: context,
@@ -203,14 +263,46 @@ class _PostTileState extends State<PostTile> {
 
                 //comment
 
-                Icon(Icons.comment),
-                Text("0"),
+                GestureDetector(
+                    onTap: openCommentBox, child: Icon(Icons.comment)),
+                const SizedBox(width: 5),
+                //comment count
+                Text(widget.post.comments.length.toString(),
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).colorScheme.primary)),
                 const Spacer(),
                 //stamp
                 Text(widget.post.timestamp.toString())
               ],
             ),
-          )
+          ),
+
+          //CAPTION
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Row(
+              children: [
+                //username
+                Text(widget.post.userName,
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(width: 10),
+                //text
+                Text(widget.post.text)
+              ],
+            ),
+          ),
+
+        //COMMENTS
+
+      BlocBuilder<PostCubit , PostState>(builder: (context, state){
+        //loaded
+
+        if(state is PostLoaded){
+          //get individual post
+        }
+      })
         ],
       ),
     );
