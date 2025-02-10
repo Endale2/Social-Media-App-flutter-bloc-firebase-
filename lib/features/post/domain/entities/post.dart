@@ -49,6 +49,10 @@ class Post {
   //conver json to post object
 
   factory Post.fromJson(Map<String, dynamic> json) {
+    final List<Comment> comments = (json["comments"] as List<dynamic>?)
+            ?.map((commentjson) => Comment.fromJson(commentjson))
+            .toList() ??
+        [];
     return Post(
         id: json["id"],
         userId: json["userId"],
@@ -56,6 +60,7 @@ class Post {
         text: json["text"],
         imageUrl: json["imageUrl"],
         timestamp: (json["timestamp"] as Timestamp).toDate(),
-        likes: List<String>.from(json["likes"] ?? []));
+        likes: List<String>.from(json["likes"] ?? []),
+        comments: comments);
   }
 }
