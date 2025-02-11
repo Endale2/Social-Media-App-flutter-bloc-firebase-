@@ -16,6 +16,19 @@ class FollowerPage extends StatelessWidget {
       length: 2,
       child: Scaffold(
           appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            title: Text(
+              "Connections",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.inversePrimary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            leading: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: Icon(Icons.arrow_back_ios_new,
+                  color: Theme.of(context).colorScheme.inversePrimary),
+            ),
             bottom: TabBar(
                 dividerColor: Colors.transparent,
                 labelColor: Theme.of(context).colorScheme.inversePrimary,

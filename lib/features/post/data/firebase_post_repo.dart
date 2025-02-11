@@ -129,7 +129,7 @@ class FirebasePostRepo implements PostRepo {
         final post = Post.fromJson(postDoc.data() as Map<String, dynamic>);
         //remove  comment
 
-        post.comments.remove((comment) => comment.id == commentId);
+        post.comments.removeWhere((comment) => comment.id == commentId);
         //update comments
 
         await postsCollection.doc(postId).update({

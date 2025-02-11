@@ -5,58 +5,66 @@ class ProfileStats extends StatelessWidget {
   final int followerCount;
   final int followingCount;
   final void Function()? onTap;
-  const ProfileStats(
-      {super.key,
-      required this.followerCount,
-      required this.followingCount,
-      required this.postCount,
-      required this.onTap});
+
+  const ProfileStats({
+    super.key,
+    required this.followerCount,
+    required this.followingCount,
+    required this.postCount,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    var textStyleForCount = TextStyle(
-        fontSize: 20, color: Theme.of(context).colorScheme.inversePrimary);
+    final textStyleForCount = TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: Theme.of(context).colorScheme.inversePrimary,
+    );
 
-    var textStyleForText =
-        TextStyle(color: Theme.of(context).colorScheme.primary);
+    final textStyleForLabel = TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      color: Colors.grey.shade600,
+    );
+
     return GestureDetector(
       onTap: onTap,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          //posts
-          SizedBox(
-            width: 100,
-            child: Column(
-              children: [
-                Text(postCount.toString(), style: textStyleForCount),
-                Text("Posts", style: textStyleForText),
-              ],
-            ),
-          ),
-          //following
-          SizedBox(
-            width: 100,
-            child: Column(
-              children: [
-                Text(followingCount.toString(), style: textStyleForCount),
-                Text("Following", style: textStyleForText),
-              ],
-            ),
-          ),
-          //followers
-
-          SizedBox(
-            width: 100,
-            child: Column(
-              children: [
-                Text(followerCount.toString(), style: textStyleForCount),
-                Text("Followers", style: textStyleForText),
-              ],
-            ),
-          )
-        ],
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildStatItem(
+                "Posts", postCount, textStyleForCount, textStyleForLabel),
+            _buildStatItem("Following", followingCount, textStyleForCount,
+                textStyleForLabel),
+            _buildStatItem("Followers", followerCount, textStyleForCount,
+                textStyleForLabel),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildStatItem(
+      String label, int count, TextStyle countStyle, TextStyle labelStyle) {
+    return Column(
+      children: [
+        AnimatedSwitcher(
+          duration: Duration(milliseconds: 300),
+          child: Text(
+            count.toString(),
+            key: ValueKey<int>(count),
+            style: countStyle,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(label, style: labelStyle),
+      ],
     );
   }
 }

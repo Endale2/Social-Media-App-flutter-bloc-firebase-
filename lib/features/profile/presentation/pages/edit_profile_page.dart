@@ -20,14 +20,10 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   final bioTextController = TextEditingController();
-  //mobile image pick
-
   PlatformFile? imagePickedFile;
-
-  //web picked file
   Uint8List? webImage;
-  //pick image
 
+  // Pick Image Function
   Future<void> pickImage() async {
     final result = await FilePicker.platform
         .pickFiles(type: FileType.image, withData: kIsWeb);
@@ -41,17 +37,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-  //when update profile button pressed
-
+  // Update Profile Function
   void updateProfile() async {
     final profileCubit = context.read<ProfileCubit>();
-    //prepare images
-
     final String uid = widget.user.uid;
     final imageMobilePath = kIsWeb ? null : imagePickedFile?.path;
     final imageWebBytes = kIsWeb ? imagePickedFile?.bytes : null;
     final String? newBio =
         bioTextController.text.isNotEmpty ? bioTextController.text : null;
+
     if (imagePickedFile != null || newBio != null) {
       profileCubit.updateProfile(
           uid: uid,
@@ -65,92 +59,141 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ProfileCubit, ProfileState>(builder: (context, state) {
-      //profile loading
+    final colorScheme = Theme.of(context).colorScheme;
 
-      if (state is ProfileLoading) {
-        return Scaffold(
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [CircularProgressIndicator(), Text("Uploading...")],
-          ),
-        );
-      } else {
-        return buildEditPage();
-      }
-
-      //profile error
-    }, listener: (context, state) {
-      if (state is ProfileLoaded) {
-        Navigator.of(context).pop();
-      }
-    });
+    return BlocConsumer<ProfileCubit, ProfileState>(
+      builder: (context, state) {
+        if (state is ProfileLoading) {
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(color: colorScheme.primary),
+                  const SizedBox(height: 10),
+                  Text("Uploading...",
+                      style: TextStyle(color: colorScheme.onBackground)),
+                ],
+              ),
+            ),
+          );
+        } else {
+          return buildEditPage();
+        }
+      },
+      listener: (context, state) {
+        if (state is ProfileLoaded) {
+          Navigator.of(context).pop();
+        }
+      },
+    );
   }
 
   Widget buildEditPage() {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Edit Profile"),
-          foregroundColor: Theme.of(context).colorScheme.primary,
-          actions: [
-            IconButton(onPressed: updateProfile, icon: Icon(Icons.upload))
+      appBar: AppBar(
+        title: Text(
+          "Edit Profile",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        ),
+        elevation: 0.0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new,
+              color: Theme.of(context).iconTheme.color, size: 28),
+          onPressed: () => Navigator.pop(context),
+        ),
+        actions: [
+          IconButton(
+            onPressed: updateProfile,
+            icon: Icon(
+              Icons.check_rounded,
+              color: Theme.of(context).iconTheme.color,
+              weight: 20,
+            ),
+          )
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+        child: Column(
+          children: [
+            // Profile Picture
+            Center(
+              child: GestureDetector(
+                onTap: pickImage,
+                child: Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    Container(
+                      height: 150,
+                      width: 150,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border:
+                            Border.all(color: colorScheme.primary, width: 2),
+                        color: colorScheme.secondary,
+                      ),
+                      clipBehavior: Clip.hardEdge,
+                      child: (!kIsWeb && imagePickedFile != null)
+                          ? Image.file(File(imagePickedFile!.path!),
+                              fit: BoxFit.cover)
+                          : (kIsWeb && webImage != null)
+                              ? Image.memory(webImage!, fit: BoxFit.cover)
+                              : CachedNetworkImage(
+                                  imageUrl: widget.user.profileImageUrl,
+                                  placeholder: (context, url) =>
+                                      const CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) => Icon(
+                                      Icons.person,
+                                      size: 72,
+                                      color: colorScheme.primary),
+                                  imageBuilder: (context, imageProvider) =>
+                                      Image(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover),
+                                ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: colorScheme.primary,
+                      ),
+                      child: Icon(Icons.camera_alt,
+                          color: colorScheme.onPrimary, size: 20),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            const SizedBox(height: 20),
+
+            // Bio Field
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Bio",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onBackground),
+              ),
+            ),
+            const SizedBox(height: 10),
+            MyTextField(
+              controller: bioTextController,
+              hintText: "Enter your bio",
+              obscureText: false,
+            ),
+
+            const SizedBox(height: 30),
           ],
         ),
-        body: Column(
-          children: [
-            //profile picture
-            Center(
-                child: Container(
-                    height: 200,
-                    width: 200,
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.secondary,
-                        shape: BoxShape.circle),
-                    clipBehavior: Clip.hardEdge,
-                    child:
-                        //picker for mobile
-                        (!kIsWeb && imagePickedFile != null)
-                            ? Image.file(File(imagePickedFile!.path!))
-                            :
-                            //for web
-                            (kIsWeb && webImage != null)
-                                ? Image.memory(webImage!)
-                                :
-                                //if there is no image picked
-
-                                CachedNetworkImage(
-                                    imageUrl: widget.user.profileImageUrl,
-                                    placeholder: (context, url) =>
-                                        const CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) => Icon(
-                                        Icons.person,
-                                        size: 72,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary),
-                                    imageBuilder: (context, imageProvider) =>
-                                        Image(
-                                            image: imageProvider,
-                                            fit: BoxFit.cover),
-                                  ))),
-            const SizedBox(height: 25),
-            //pick image button
-            Center(
-                child: MaterialButton(
-                    onPressed: pickImage,
-                    color: Colors.blue,
-                    child: Text("Pick image"))),
-            //bio
-            Text("Bio"),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: MyTextField(
-                  controller: bioTextController,
-                  hintText: "bio",
-                  obscureText: false),
-            ),
-          ],
-        ));
+      ),
+    );
   }
 }

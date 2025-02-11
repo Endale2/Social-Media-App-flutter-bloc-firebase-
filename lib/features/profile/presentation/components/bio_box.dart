@@ -9,9 +9,10 @@ class BioBox extends StatelessWidget {
     return Container(
         width: double.infinity,
         padding: EdgeInsets.all(25),
-        decoration:
-            BoxDecoration(color: Theme.of(context).colorScheme.secondary),
-        child: Text(text.isNotEmpty ? text : "empty bio",
+        decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondary,
+            borderRadius: BorderRadius.circular(20)),
+        child: Text(text.isNotEmpty ? text : "bio",
             style: TextStyle(color: Theme.of(context).colorScheme.primary)));
   }
 }

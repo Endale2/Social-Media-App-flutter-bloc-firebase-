@@ -103,19 +103,18 @@ class _UploadPostPageState extends State<UploadPostPage> {
   Widget buildUploadPage() {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         elevation: 0, // No elevation
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded, // Correct iOS-style back arrow
-            color: Colors.black,
+            color: Theme.of(context).iconTheme.color,
             size: 20, // Smaller for iOS feel
           ),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           "New Post",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
+          style: TextStyle(fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
         actions: [

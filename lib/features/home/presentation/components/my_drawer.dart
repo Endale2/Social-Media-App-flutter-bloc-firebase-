@@ -57,17 +57,25 @@ class MyDrawer extends StatelessWidget {
                 MyDrawerTile(
                     title: "Search",
                     icon: Icons.search,
-                    onTap: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SearchPage()))),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SearchPage()));
+                    }),
 
                 //settings
                 MyDrawerTile(
                     title: "Settings",
                     icon: Icons.settings,
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SettingPage()))),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SettingPage()));
+                    }),
 
                 //Logout
 
