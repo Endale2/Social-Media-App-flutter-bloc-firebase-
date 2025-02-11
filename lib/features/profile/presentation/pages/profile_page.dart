@@ -12,6 +12,7 @@ import 'package:socialx/features/profile/presentation/components/profile_stats.d
 import 'package:socialx/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:socialx/features/profile/presentation/cubits/profile_state.dart';
 import 'package:socialx/features/profile/presentation/pages/edit_profile_page.dart';
+import 'package:socialx/features/profile/presentation/pages/follower_page.dart';
 
 class ProfilePage extends StatefulWidget {
   final String uid;
@@ -132,9 +133,16 @@ class _ProfilePageState extends State<ProfilePage> {
                 //follow /unfollow count
 
                 ProfileStats(
-                    followerCount: user.followers.length,
-                    followingCount: user.following.length,
-                    postCount: postCount),
+                  followerCount: user.followers.length,
+                  followingCount: user.following.length,
+                  postCount: postCount,
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FollowerPage(
+                              followers: user.followers,
+                              following: user.following))),
+                ),
                 //follow/unfollow button
                 if (!isOwnProfile)
                   FollowButton(
