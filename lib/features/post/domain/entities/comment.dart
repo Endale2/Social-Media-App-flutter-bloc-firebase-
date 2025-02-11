@@ -7,15 +7,19 @@ class Comment {
   final String userName;
   final String text;
   final DateTime timestamp;
-  Comment(
-      {required this.id,
-      required this.postId,
-      required this.userId,
-      required this.userName,
-      required this.text,
-      required this.timestamp});
+  final String? profileImageUrl; // Optional field for the profile picture
 
-  //convert the Comment to json
+  Comment({
+    required this.id,
+    required this.postId,
+    required this.userId,
+    required this.userName,
+    required this.text,
+    required this.timestamp,
+    this.profileImageUrl,
+  });
+
+  // Convert the Comment to JSON.
   Map<String, dynamic> toJson() {
     return {
       "id": id,
@@ -24,11 +28,11 @@ class Comment {
       "userName": userName,
       "text": text,
       "timestamp": Timestamp.fromDate(timestamp),
+      "profileImageUrl": profileImageUrl, // will be null if not provided
     };
   }
 
-  //convert json to Comment object
-
+  // Create a Comment object from JSON.
   factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
       id: json["id"],
@@ -37,6 +41,7 @@ class Comment {
       userName: json["userName"],
       text: json["text"],
       timestamp: (json["timestamp"] as Timestamp).toDate(),
+      profileImageUrl: json["profileImageUrl"],
     );
   }
 }

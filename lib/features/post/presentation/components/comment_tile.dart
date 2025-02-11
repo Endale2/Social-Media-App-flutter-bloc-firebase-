@@ -29,27 +29,28 @@ class _CommentTileState extends State<CommentTile> {
     isOwnComment = (widget.comment.userId == currentUser!.uid);
   }
 
-  //show options for deleting
+  // Show options for deleting the comment.
   void showOptions() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Delete Comment?"),
+        title: const Text("Delete Comment?"),
         actions: [
-          //cancel button
+          // Cancel button.
           TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text("cancel")),
-
-          //delete button
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("Cancel"),
+          ),
+          // Delete button.
           TextButton(
-              onPressed: () {
-                context
-                    .read<PostCubit>()
-                    .deleteComment(widget.comment.postId, widget.comment.id);
-                Navigator.of(context).pop();
-              },
-              child: Text("delete"))
+            onPressed: () {
+              context
+                  .read<PostCubit>()
+                  .deleteComment(widget.comment.postId, widget.comment.id);
+              Navigator.of(context).pop();
+            },
+            child: const Text("Delete", style: TextStyle(color: Colors.red)),
+          ),
         ],
       ),
     );
@@ -57,29 +58,46 @@ class _CommentTileState extends State<CommentTile> {
 
   @override
   Widget build(BuildContext context) {
+    // Retrieve the profile image URL (make sure your Comment model has this field)
+    final String? profileImageUrl = widget.comment.profileImageUrl;
+    final String initialLetter = widget.comment.userName.isNotEmpty
+        ? widget.comment.userName.substring(0, 1).toUpperCase()
+        : '?';
+
     return Padding(
-      padding: const EdgeInsets.only(left: 20),
-      child: Row(
-        children: [
-          //name
-          Text(widget.comment.userName,
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(width: 10),
-
-          //comment text
-
-          Text(widget.comment.text),
-          const Spacer(),
-          //button to delete comment
-
-          if (isOwnComment)
-            GestureDetector(
-                onTap: showOptions,
-                child: Icon(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
+      child: ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: CircleAvatar(
+          backgroundColor:
+              Theme.of(context).colorScheme.primary.withOpacity(0.1),
+          backgroundImage:
+              (profileImageUrl != null && profileImageUrl.isNotEmpty)
+                  ? NetworkImage(profileImageUrl)
+                  : null,
+          child: (profileImageUrl == null || profileImageUrl.isEmpty)
+              ? Text(
+                  initialLetter,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                )
+              : null,
+        ),
+        title: Text(
+          widget.comment.userName,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(widget.comment.text),
+        trailing: isOwnComment
+            ? IconButton(
+                icon: Icon(
                   Icons.more_horiz,
                   color: Theme.of(context).colorScheme.primary,
-                ))
-        ],
+                ),
+                onPressed: showOptions,
+              )
+            : null,
       ),
     );
   }
