@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:socialx/features/profile/domain/entities/profile_user.dart';
+import 'package:socialx/features/profile/presentation/pages/profile_page.dart';
 
 class UserTile extends StatelessWidget {
   final ProfileUser user;
@@ -15,6 +16,11 @@ class UserTile extends StatelessWidget {
       trailing: Icon(Icons.arrow_forward,
           color: Theme.of(context).colorScheme.primary),
       leading: Icon(Icons.person, color: Theme.of(context).colorScheme.primary),
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilePage(uid: user.uid),
+          )),
     );
   }
 }
