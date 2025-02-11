@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialx/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:socialx/features/home/presentation/components/my_drawer_tile.dart';
 import 'package:socialx/features/profile/presentation/pages/profile_page.dart';
+import 'package:socialx/features/search/presentation/pages/search_page.dart';
+import 'package:socialx/features/settings/pages/setting_page.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -52,11 +54,20 @@ class MyDrawer extends StatelessWidget {
                     }),
 
                 //search
-                MyDrawerTile(title: "Search", icon: Icons.search, onTap: () {}),
+                MyDrawerTile(
+                    title: "Search",
+                    icon: Icons.search,
+                    onTap: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SearchPage()))),
 
                 //settings
                 MyDrawerTile(
-                    title: "Settings", icon: Icons.settings, onTap: () {}),
+                    title: "Settings",
+                    icon: Icons.settings,
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SettingPage()))),
 
                 //Logout
 
