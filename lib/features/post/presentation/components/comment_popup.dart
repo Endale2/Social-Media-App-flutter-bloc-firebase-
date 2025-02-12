@@ -49,7 +49,7 @@ class _CommentPopupState extends State<CommentPopup> {
     return GestureDetector(
       onTap: () => Navigator.pop(context),
       child: Container(
-        color: Colors.transparent, // Makes the entire area tappable.
+        color: Colors.transparent,
         child: DraggableScrollableSheet(
           initialChildSize: 0.6,
           minChildSize: 0.4,
