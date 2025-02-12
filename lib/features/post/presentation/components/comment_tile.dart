@@ -58,7 +58,6 @@ class _CommentTileState extends State<CommentTile> {
 
   @override
   Widget build(BuildContext context) {
-    // Retrieve the profile image URL (make sure your Comment model has this field)
     final String? profileImageUrl = widget.comment.profileImageUrl;
     final String initialLetter = widget.comment.userName.isNotEmpty
         ? widget.comment.userName.substring(0, 1).toUpperCase()
