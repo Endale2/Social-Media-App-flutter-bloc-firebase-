@@ -47,7 +47,6 @@ class _CommentPopupState extends State<CommentPopup> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // Tapping outside the popup dismisses it.
       onTap: () => Navigator.pop(context),
       child: Container(
         color: Colors.transparent, // Makes the entire area tappable.
@@ -57,7 +56,6 @@ class _CommentPopupState extends State<CommentPopup> {
           maxChildSize: 0.9,
           builder: (context, scrollController) {
             return GestureDetector(
-              // Absorb taps inside the sheet so that it doesn't dismiss.
               onTap: () {},
               child: Container(
                 decoration: BoxDecoration(
@@ -83,7 +81,7 @@ class _CommentPopupState extends State<CommentPopup> {
                             final post = state.posts.firstWhere(
                               (p) => p.id == widget.post.id,
                             );
-                            // If no comments, display "No comments"
+
                             if (post.comments.isEmpty) {
                               return Center(child: Text("No comments"));
                             }
