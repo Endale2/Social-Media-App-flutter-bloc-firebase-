@@ -66,8 +66,8 @@ class FollowerPage extends StatelessWidget {
                     //loading
                     else if (snapshot.connectionState ==
                         ConnectionState.waiting) {
-                      return ListTile(
-                        title: Text("Loading...."),
+                      return Center(
+                        child: CircularProgressIndicator(),
                       );
                     }
 

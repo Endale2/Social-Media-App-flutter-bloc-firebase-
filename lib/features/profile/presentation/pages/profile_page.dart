@@ -202,7 +202,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     final userPosts = state.posts
                         .where((post) => post.userId == widget.uid)
                         .toList();
-                    postCount = userPosts.length;
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (mounted) {
+                        setState(() {
+                          postCount = userPosts.length;
+                        });
+                      }
+                    });
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),

@@ -103,12 +103,12 @@ class _UploadPostPageState extends State<UploadPostPage> {
   Widget buildUploadPage() {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0, // No elevation
+        elevation: 0,
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios_new_rounded, // Correct iOS-style back arrow
+            Icons.arrow_back_ios_new_rounded,
             color: Theme.of(context).iconTheme.color,
-            size: 20, // Smaller for iOS feel
+            size: 20,
           ),
           onPressed: () => Navigator.pop(context),
         ),

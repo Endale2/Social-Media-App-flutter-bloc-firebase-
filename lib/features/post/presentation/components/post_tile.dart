@@ -268,7 +268,7 @@ class _PostTileState extends State<PostTile> {
                 Spacer(),
                 // Timestamp.
                 Text(
-                  timeago.format(widget.post.timestamp),
+                  timeago.format(widget.post.timestamp, locale: 'en_short'),
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
