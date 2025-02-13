@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialx/features/auth/domain/entities/app_user.dart';
+import 'package:socialx/features/auth/domain/models/app_user.dart';
 import 'package:socialx/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:socialx/features/post/presentation/components/post_tile.dart';
 import 'package:socialx/features/post/presentation/cubits/post_cubit.dart';

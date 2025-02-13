@@ -4,10 +4,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialx/features/auth/domain/entities/app_user.dart';
+import 'package:socialx/features/auth/domain/models/app_user.dart';
 import 'package:socialx/features/auth/presentation/components/my_text_field.dart';
 import 'package:socialx/features/auth/presentation/cubits/auth_cubit.dart';
-import 'package:socialx/features/post/domain/entities/post.dart';
+import 'package:socialx/features/post/domain/models/post.dart';
 import 'package:socialx/features/post/presentation/cubits/post_cubit.dart';
 import 'package:socialx/features/post/presentation/cubits/post_state.dart';
 

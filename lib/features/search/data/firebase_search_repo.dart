@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:socialx/features/profile/domain/entities/profile_user.dart';
+import 'package:socialx/features/profile/domain/models/profile_user.dart';
 import 'package:socialx/features/search/domain/search_repo.dart';
 
 class FirebaseSearchRepo implements SearchRepo {

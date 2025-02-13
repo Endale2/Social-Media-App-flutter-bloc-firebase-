@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:socialx/features/auth/domain/entities/app_user.dart';
+import 'package:socialx/features/auth/domain/models/app_user.dart';
 import 'package:socialx/features/auth/domain/repos/auth_repos.dart';
 
 class FirebaseAuthRepo implements AuthRepo {

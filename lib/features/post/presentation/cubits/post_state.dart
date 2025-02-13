@@ -1,4 +1,4 @@
-import 'package:socialx/features/post/domain/entities/post.dart';
+import 'package:socialx/features/post/domain/models/post.dart';
 
 abstract class PostState {}
 

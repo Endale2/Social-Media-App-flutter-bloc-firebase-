@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialx/features/profile/domain/entities/profile_user.dart';
+import 'package:socialx/features/profile/domain/models/profile_user.dart';
 import 'package:socialx/features/profile/domain/repos/profile_repo.dart';
 import 'package:socialx/features/profile/presentation/cubits/profile_state.dart';
 import 'package:socialx/features/storage/domain/storage_repo.dart';

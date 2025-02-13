@@ -1,4 +1,4 @@
-import 'package:socialx/features/auth/domain/entities/app_user.dart';
+import 'package:socialx/features/auth/domain/models/app_user.dart';
 
 class ProfileUser extends AppUser {
   final String bio;

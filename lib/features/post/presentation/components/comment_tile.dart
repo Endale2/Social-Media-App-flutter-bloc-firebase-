@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialx/features/auth/domain/entities/app_user.dart';
+import 'package:socialx/features/auth/domain/models/app_user.dart';
 import 'package:socialx/features/auth/presentation/cubits/auth_cubit.dart';
-import 'package:socialx/features/post/domain/entities/comment.dart';
+import 'package:socialx/features/post/domain/models/comment.dart';
 import 'package:socialx/features/post/presentation/cubits/post_cubit.dart';
 
 class CommentTile extends StatefulWidget {

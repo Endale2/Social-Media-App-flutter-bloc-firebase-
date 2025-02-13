@@ -2,13 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:socialx/features/auth/domain/entities/app_user.dart';
+import 'package:socialx/features/auth/domain/models/app_user.dart';
 import 'package:socialx/features/auth/presentation/cubits/auth_cubit.dart';
-import 'package:socialx/features/post/domain/entities/post.dart';
+import 'package:socialx/features/post/domain/models/post.dart';
 import 'package:socialx/features/post/presentation/components/comment_popup.dart';
 import 'package:socialx/features/post/presentation/cubits/post_cubit.dart';
 import 'package:socialx/features/post/presentation/cubits/post_state.dart';
-import 'package:socialx/features/profile/domain/entities/profile_user.dart';
+import 'package:socialx/features/profile/domain/models/profile_user.dart';
 import 'package:socialx/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:socialx/features/profile/presentation/pages/profile_page.dart';
 
