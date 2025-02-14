@@ -8,6 +8,7 @@ class SupabaseConfig {
     return _instance;
   }
 
+
   SupabaseConfig._internal();
 
   Future<void> initialize() async {
