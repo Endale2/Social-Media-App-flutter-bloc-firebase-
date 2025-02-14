@@ -62,7 +62,7 @@ class FirebaseAuthRepo implements AuthRepo {
     if (firebaseUser == null) {
       return null;
     }
-    //fetch user document from firestore
+    //fetch user doc from firestore
     DocumentSnapshot userDoc =
         await firebaseFirestore.collection("users").doc(firebaseUser.uid).get();
     if (!userDoc.exists) {
