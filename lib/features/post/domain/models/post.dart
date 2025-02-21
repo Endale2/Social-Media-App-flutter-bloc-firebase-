@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:socialx/features/post/domain/entities/comment.dart';
+import 'package:socialx/features/post/domain/models/comment.dart';
 
 class Post {
   final String id;
