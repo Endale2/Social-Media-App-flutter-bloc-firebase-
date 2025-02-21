@@ -1,6 +1,6 @@
 .env
 
-./lib/config
+/lib/config
 # Miscellaneous
 *.class
 *.log
